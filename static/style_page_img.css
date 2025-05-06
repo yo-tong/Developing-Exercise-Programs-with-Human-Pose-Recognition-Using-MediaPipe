@@ -1,0 +1,117 @@
+.uploadButton {
+  cursor: pointer;
+  display: inline-block;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: #adadad;
+  text-align: center;
+  line-height: 24px; /* 保证文本和按钮垂直居中 */
+}
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  flex-direction: column; /* 垂直方向排列 */
+}
+#imageContainer {
+  width: 500px;
+  height: 500px;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+}
+#imageDisplay {
+  max-width: 100%;
+  max-height: 100%;
+}
+/* 隐藏文件上传控件 */
+#imageUpload {
+  display: none;
+}
+p {
+  font-size: 20pt; /* 以點（point）為單位 */
+  /*padding-left: 100px;*/
+  /*padding-right: 100px;*/
+}
+#center {
+  text-align: center;
+}
+header {
+  background-color: #f4f1e8;
+  display: flex; /* 使用 Flexbox 布局 */
+  flex-wrap: wrap;
+  align-items: center; /* 垂直居中 */
+}
+.page-img-link {
+  border-radius: 20px; /* 圆滑边框 */
+  padding: 5px 10px; /* 按钮的内边距 */
+  display: flex; /* 使用 Flexbox 布局 */
+  align-items: center; /* 垂直居中 */
+  text-decoration: none; /* 去除链接的下划线 */
+  color: #000; /* 设置链接颜色 */
+  background-color: #bdb6a1; /* 当位于 /page_img 页面时的背景色 */
+}
+
+.page-img-link:hover {
+  border-color: #ccc; /* 鼠标悬停时的边框颜色 */
+}
+.logo {
+  align-items: center; /* 垂直居中对齐 */
+  display: flex; /* 将导航部分设置为 Flexbox 布局 */
+  flex: 7 1 100px;
+}
+.logo img {
+  width: 13vw; /* 设置图像宽度 */
+}
+
+nav {
+  /* border: 2px solid #981260;*/
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex; /*使用 Flexbox 布局  */
+  flex: 5 1 100px;
+}
+nav ul {
+  /* border: 2px solid #981260;*/
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex; /*使用 Flexbox 布局  */
+}
+nav ul li {
+  margin-right: 10px; /* 调整每个导航项之间的间距 */
+}
+nav ul li a {
+  display: flex;
+  align-items: center; /* 垂直居中 */
+  text-decoration: none; /* 去除链接的下划线 */
+  color: rgb(0, 0, 0);
+  font-size: 1.35rem;
+  transition: all 0.2s ease;
+  border-radius: 20px; /* 圆滑边框 */
+  padding: 5px 10px; /* 按钮的内边距 */
+  background-color: #f4f1e8;
+}
+nav ul li a img {
+  width: 30px; /* 设置图像宽度 */
+  height: auto; /* 保持图像比例 */
+  margin-right: 5px; /* 调整图像与文字之间的间距 */
+}
+
+li a:hover {
+  /* opacity: 0.7;  设置鼠标悬停时的透明度 */
+  background-color: #e1dccd;
+  border-color: #ccc; /* 鼠标悬停时的边框颜色 */
+  /*  background-color: #e2d8be; */
+}
+
+nav ul li a span {
+  font-size: 1.3rem; /* 以點（point）為單位 */
+  padding: 3px; /* 设置文本的内边距 */
+}

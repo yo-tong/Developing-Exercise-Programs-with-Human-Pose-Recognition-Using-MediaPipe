@@ -1,0 +1,51 @@
+@import "./header";
+p {
+  font-size: 20pt; /* 以點（point）為單位 */
+}
+#choose_img {
+  width: 100%;
+  display: flex;
+  form {
+    width: 80%;
+  }
+}
+#formContent {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#chooseImageLabel {
+  cursor: pointer;
+  margin-right: 100px;
+  margin-bottom: 150px; /*向上移動 150px */
+  #chooseImage {
+    width: 200px;
+    cursor: pointer;
+  }
+}
+
+#imageAndAnalyzeContainer {
+  width: 40%;
+  display: flex;
+  align-items: flex-end;
+}
+#imageContainer {
+  min-width: 520px;
+  min-height: 520px;
+  display: flex;
+}
+#imageDisplay {
+  width: 520px; /* 固定寬度 */
+  height: 520px; /* 固定高度 */
+  object-fit: contain; /* 等比例縮放圖片 */
+}
+#analyzeImage {
+  padding: 0;
+  border: none;
+  display: none;
+}
+#analyzeImage img {
+  width: 210px;
+  height: auto;
+}

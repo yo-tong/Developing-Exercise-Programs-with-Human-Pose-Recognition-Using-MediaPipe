@@ -1,0 +1,132 @@
+@import "./header";
+@import "./camera-pos-box";
+
+main {
+  display: flex;
+}
+h2 {
+  font-size: 25px;
+}
+div.user-setting {
+  width: 95%;
+  display: flex;
+  //border: 3px solid rgb(56, 205, 68);
+  p {
+    font-size: 20px;
+    font-weight: bold;
+  }
+}
+.label_control {
+  width: 9vw;
+  margin-top: 6px;
+
+  text-align: center;
+}
+.Input_box {
+  width: 15vw;
+}
+.setting-col {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  margin: 5px;
+  div.user-setting-example {
+    margin-top: -13px;
+    justify-content: center; /* 水平居中 */
+    align-items: center;
+  }
+}
+.setting-col2 {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  margin: 5px;
+  div.user-setting-inputs {
+    background-color: #ebecec; /* 綠色背景 */
+
+    border-radius: 12px; /* 圓角 */
+    justify-content: center; /* 水平居中 */
+    div.angle-inputs {
+      display: flex;
+      flex-direction: column;
+      margin-top: 10px;
+    }
+    .setting-row1 {
+      display: flex;
+      margin-right: 10px;
+      width: 100%;
+      margin-bottom: 20px;
+      margin-top: 6px;
+      input {
+        width: 39vw;
+      }
+    }
+    .setting-row {
+      display: flex;
+      margin-right: 10px;
+      width: 100%;
+      margin-bottom: 20px;
+
+      input {
+        width: 15vw;
+      }
+    }
+  }
+}
+
+.container {
+  background-color: #ebecec; /* 綠色背景 */
+  border-radius: 12px; /* 圓角 */
+  margin-top: 10px;
+  height: 85%;
+}
+
+.custom-action-button {
+  background-color: #a6b090; /* 綠色背景 */
+
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  font-size: 16px;
+  border-radius: 12px; /* 圓角 */
+  cursor: pointer;
+  width: 150px;
+  margin: 5px;
+}
+
+.custom-action-button:hover {
+  background-color: #c3c9b5;
+}
+
+.custom-delete-button {
+  background-color: #f44336;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  font-size: 16px;
+  margin: 5px;
+  border-radius: 12px; /* 圓角 */
+  cursor: pointer;
+}
+
+.custom-delete-button:hover {
+  background-color: #e53935;
+}
+
+div.webcam {
+  display: flex;
+  min-height: 300px;
+  min-width: 300px;
+  justify-content: center;
+  border: 3px solid rgb(32, 110, 64);
+  margin-top: 5px;
+  img {
+    //width: 500px;
+    // min-height: 250px;
+    width: 550px;
+    object-fit: contain; /* 等比例缩放图片 */
+    //border: 3px solid rgb(0, 0, 0);
+  }
+}

@@ -1,0 +1,14 @@
+@import "./header";
+p {
+  font-size: 20pt; /* 以點（point）為單位 */
+  /*padding-left: 100px;*/
+  /*padding-right: 100px;*/
+}
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  flex-direction: column; /* 垂直方向排列 */
+}

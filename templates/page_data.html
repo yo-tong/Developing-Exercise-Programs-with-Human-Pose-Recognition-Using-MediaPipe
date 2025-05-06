@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-Hants">
+  <head>
+    <meta charset="UTF-8" />
+    <title>管理模式</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/style_page_data.css') }}"
+    />
+  </head>
+  <body>
+    <header>
+      <section class="logo">
+        <a href="/page_home">
+          <img src="static/picture/logo.png" alt="logo" />
+        </a>
+      </section>
+      <nav>
+        <ul>
+          <li>
+            <a href="/page_img">
+              <img src="static/picture/logo_img.png" alt="logo_img" />
+              <span>相片</span>
+            </a>
+          </li>
+          <li>
+            <a href="/page_video">
+              <img src="static/picture/logo_video.png" alt="logo_video" />
+              <span>影片</span>
+            </a>
+          </li>
+          <li>
+            <a href="/page_camera" class="page-camera-link">
+              <img src="static/picture/logo_camera.png" alt="logo_camera" />
+              <span>即時影像</span>
+            </a>
+          </li>
+          <li class="user-menu">
+            <a href="#" class="page-user-link">
+              <img src="static/picture/logo_user.png" alt="logo_user" />
+              <span>{{ username }}</span>
+            </a>
+            <!-- 下拉選單 -->
+            <ul class="dropdown-menu page-user-link">
+              <li><a href="/page_user">個人資料</a></li>
+              <li>
+                <form
+                  action="{{ url_for('logout') }}"
+                  method="post"
+                  onsubmit="confirmLogout(event)"
+                >
+                  <div class="logout">
+                    <button type="submit" class="btn btn-danger">登出</button>
+                  </div>
+                </form>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <div class="camera-pos-box">
+        <ul>
+          <li>
+            <a href="/page_camera1">
+              <img src="static/picture/pos1.png" alt="logo_pos1" />
+            </a>
+          </li>
+          <li>
+            <a href="/page_camera2">
+              <img src="static/picture/pos2.png" alt="logo_pos2" />
+            </a>
+          </li>
+          <li>
+            <a href="/page_camera3">
+              <img src="static/picture/pos3.png" alt="logo_pos3" />
+            </a>
+          </li>
+          <li>
+            <a href="/page_data">
+              <img
+                class="page-camera-click-mark"
+                src="static/picture/pos4.png"
+                alt="logo_pos4"
+              />
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="user-setting">
+        <div class="setting-col">
+          <p>【復健】</p>
+          <div class="user-setting-example">
+            <img
+              src="static/picture/people.png"
+              alt="pos4"
+              style="height: 280px"
+            />
+          </div>
+        </div>
+        <div class="setting-col2">
+          <div class="user-setting-inputs">
+            <form id="angleForm" action="/set_action" method="post">
+              <div class="angle-inputs">
+                <div class="setting-row1">
+                  <label class="label_control" for="action_name">
+                    • 動作名稱：</label
+                  >
+                  <input
+                    type="text"
+                    id="action_name"
+                    name="action_name"
+                    class="form-control"
+                    placeholder="請輸入動作名稱"
+                    required
+                  />
+                  <div>
+                    <p style="width: 10vw; margin-left: 5px"></p>
+                  </div>
+                </div>
+                <div class="setting-row">
+                  <label class="label_control" for="angleType">
+                    • 選擇部位：</label
+                  >
+                  <select
+                    id="angleType"
+                    name="angleType"
+                    class="form-control Input_box"
+                  >
+                    <option value="右手肘夾角">右手肘夾角∠ACE</option>
+                    <option value="左手肘夾角">左手肘夾角∠BDF</option>
+                    <option value="右肩夾角">右肩夾角∠CAG</option>
+                    <option value="左肩夾角">左肩夾角∠DBH</option>
+                    <option value="右髖夾角">右髖夾角∠AGI</option>
+                    <option value="左髖夾角">左髖夾角∠BHJ</option>
+                    <option value="右膝夾角">右膝夾角∠GIK</option>
+                    <option value="左膝夾角">左膝夾角∠HJL</option>
+                  </select>
+                  <label class="label_control" for="angledirection">
+                    • 選擇狀態：</label
+                  >
+                  <select
+                    id="angledirection"
+                    name="angledirection"
+                    class="form-control Input_box"
+                  >
+                    <option value="角度變小">角度變小</option>
+                    <option value="角度變大">角度變大</option>
+                  </select>
+                  <div>
+                    <p style="width: 10vw; margin-left: 5px"></p>
+                  </div>
+                </div>
+                <div class="setting-row">
+                  <label class="label_control" for="initial_angle">
+                    • 初始角度：</label
+                  >
+                  <input
+                    type="number"
+                    id="initial_angle"
+                    name="initial_angle"
+                    min="1"
+                    max="360"
+                    class="form-control Input_box"
+                  />
+
+                  <label class="label_control" for="goal_angle">
+                    • 目標角度：</label
+                  >
+                  <input
+                    type="number"
+                    id="goal_angle"
+                    name="goal_angle"
+                    min="1"
+                    max="360"
+                    class="form-control Input_box"
+                  /><input
+                    type="image"
+                    src="static/picture/submit.png"
+                    alt="Submit"
+                    style="width: 10vw; margin-left: 5px"
+                    class="submit-button"
+                  />
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="container">
+            <h2>★ 復健模式（最多五個）★</h2>
+            <div id="actionButtons">
+              {% if actions %} {% for action in actions %}
+              <div class="action-row">
+                <!-- 動作按鈕 -->
+                <form
+                  action="/perform_action/{{ action['action_name'] }}"
+                  method="get"
+                  style="display: inline"
+                >
+                  <button type="submit" class="custom-action-button">
+                    {{ action['action_name'] }}
+                  </button>
+                </form>
+                <!-- 刪除動作按鈕 -->
+                <form
+                  class="delete-action-form"
+                  action="/delete_action"
+                  method="post"
+                  style="display: inline"
+                >
+                  <input
+                    type="hidden"
+                    name="action_name"
+                    value="{{ action['action_name'] }}"
+                  />
+                  <button
+                    type="button"
+                    class="custom-delete-button delete-action-button"
+                  >
+                    删除
+                  </button>
+                </form>
+              </div>
+              {% endfor %} {% else %}
+              <p>沒有動作紀錄</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+  <script src="{{ url_for('static', filename='user_head.js') }}"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      // 監聽刪除按鈕的點擊事件
+      $(".delete-action-button").click(function (event) {
+        event.preventDefault(); // 阻止預設的點擊行為
+
+        // 獲取對應的表單
+        var form = $(this).closest("form"); // 找到最近的表單元素
+
+        // 發送AJAX請求來刪除動作
+        $.ajax({
+          type: "POST",
+          url: form.attr("action"), // 取得表單的action屬性，作為請求的URL
+          data: form.serialize(), // 將表單數據序列化成URL編碼的字串
+          success: function (response) {
+            alert(response.message); // 顯示刪除成功的提示信息
+            location.reload(); // 刷新頁面以顯示最新的動作記錄
+          },
+          error: function (xhr) {
+            alert(xhr.responseJSON.message); // 顯示錯誤信息
+          },
+        });
+      });
+    });
+  </script>
+
+  <script>
+    document
+      .getElementById("angleForm") // 獲取ID為angleForm的表單元素
+      .addEventListener("submit", function (event) {
+        event.preventDefault(); // 阻止預設的提交行為
+
+        // 獲取下拉選單和輸入框中的值
+        const actionName = document.getElementById("action_name").value;
+        const angleType = document.getElementById("angleType").value;
+        const initialAngle = parseInt(
+          document.getElementById("initial_angle").value
+        ); // 初始角度，並確保是整數
+        const goalAngle = parseInt(document.getElementById("goal_angle").value); // 确保是整数
+        const angleDirection = document.getElementById("angledirection").value; // 获取angledirection
+        // 驗證初始角度和目標角度的關係
+        // 打印角度數值以便調試
+        console.log("initial_angle:", initialAngle);
+        console.log("goal_angle:", goalAngle);
+        console.log("angle_direction:", angleDirection);
+        // 如果選擇了"角度變小"，但初始角度小於或等於目標角度，則提示錯誤
+        if (angleDirection === "角度變小" && initialAngle <= goalAngle) {
+          alert("當選擇 角度變小 時，初始角度必須大於目標角度");
+          return; // 阻止表單提交
+        }
+        // 如果選擇了"角度變大"，但初始角度大於或等於目標角度，則提示錯誤
+        if (angleDirection === "角度變大" && initialAngle >= goalAngle) {
+          alert("當選擇 角度變大 時，初始角度必須小於目標角度");
+          return; // 阻止表單提交
+        }
+        // 創建一個數據對象，用來提交給伺服器
+        const data = {
+          action_name: actionName,
+          angle_type: angleType,
+          initial_angle: initialAngle,
+          goal_angle: goalAngle,
+          angle_direction: angleDirection, // 角度方向
+        };
+
+        // 使用AJAX發送數據到伺服器
+        $.ajax({
+          type: "POST",
+          url: "/set_action", // 處理該請求的URL
+          contentType: "application/json", // 指定發送數據的內容類型為JSON
+          data: JSON.stringify(data), // 將數據對象轉換為JSON格式發送
+          success: function (response) {
+            alert(response.message); // 顯示成功消息
+            location.reload(); // 刷新頁面
+          },
+          error: function (xhr) {
+            alert(xhr.responseJSON.message); // 顯示錯誤消息
+          },
+        });
+      });
+  </script>
+
+  <script>
+    $(document).ready(function () {
+      // 監聽表單提交事件
+      $("#angleForm").submit(function (event) {
+        event.preventDefault(); // 阻止表單的預設提交行為
+
+        // 獲取表單數據
+        var formData = $(this).serialize(); // 將表單數據序列化為URL編碼的字串
+
+        // 使用AJAX發送表單數據
+        $.ajax({
+          type: "POST",
+          url: $(this).attr("action"), // 使用表單的action屬性作為提交的URL
+          data: formData, // 發送序列化後的表單數據
+          success: function (response) {
+            // 成功時顯示彈窗提示
+            alert(response.message);
+          },
+          error: function (xhr) {
+            // 出錯時顯示錯誤提示
+            alert(xhr.responseJSON.message);
+          },
+        });
+      });
+    });
+  </script>
+</html>

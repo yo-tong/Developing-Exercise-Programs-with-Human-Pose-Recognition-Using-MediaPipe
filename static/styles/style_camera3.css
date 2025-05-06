@@ -1,0 +1,298 @@
+@charset "UTF-8";
+header {
+  background-color: #ffffff; /* 設置背景顏色為白色 */
+  position: sticky; /* 讓 header 固定在滾動時的頂部 */
+  top: 0; /* 緊貼視窗頂部 */
+  z-index: 5; /* 設置堆疊層級，確保 header 在其他元素之上 */
+  display: flex; /* 使用 Flexbox 佈局 */
+  flex-wrap: wrap; /* 在較小螢幕上換行 */
+  align-items: center; /* 垂直居中對齊 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); /* 添加陰影以增加視覺深度 */
+}
+header .logo {
+  align-items: center; /* 垂直居中對齊 logo */
+  display: flex; /* 使用 Flexbox 佈局 */
+  flex: 1 1 100px; /* 設置彈性佔位，logo 優先佔據較多空間 */
+}
+header .logo img {
+  height: 5vw; /* 設置 logo 的高度為視窗寬度的 5% */
+}
+header nav {
+  /* border: 2px solid #981260;*/
+  list-style-type: none; /* 移除列表項的預設樣式 */
+  margin-right: 30px;
+  display: flex; /* 使用 Flexbox 佈局 */
+  flex: 1 1 150px; /* 設置導航佔用的彈性空間 */
+}
+header nav ul {
+  /* border: 2px solid #981260;*/
+  list-style-type: none; /* 移除 ul 的預設樣式 */
+  padding: 0; /* 移除內邊距 */
+  margin: 0; /* 移除外邊距 */
+  margin-left: auto;
+  display: flex; /* 使用 Flexbox 佈局 */
+}
+header nav ul li {
+  margin-right: 10px; /* 設置每個導航項之間的間距 */
+}
+header nav ul li a {
+  display: flex; /* 使內容水平排列 */
+  align-items: center; /* 垂直居中對齊 */
+  text-decoration: none; /* 移除連結下劃線 */
+  color: rgb(0, 0, 0); /* 設置文字顏色為黑色 */
+  font-size: 1.35rem; /* 設置文字大小 */
+  transition: all 0.2s ease; /* 添加過渡效果 */
+  border-radius: 20px; /* 圓角邊框 */
+  padding: 5px 10px; /* 內邊距 */
+  /*background-color: #f4f1e8; */
+  transition: all 0.1s ease;
+}
+header nav ul li a:hover {
+  /*&表示自己*/
+  background-color: #e3e2e2; /* 滑鼠懸停時的背景顏色 */
+  border-color: #ccc; /* 滑鼠懸停時的邊框顏色 */
+  transform: scale(1.1); /* 滑鼠懸停時放大效果 */
+  /*  background-color: #e2d8be; */
+}
+header nav ul li a img {
+  width: 30px; /* 設置圖片寬度 */
+  height: auto; /* 保持圖片比例 */
+  margin-right: 5px; /* 調整圖片與文字之間的間距 */
+}
+header nav ul li a span {
+  font-size: 1.3rem; /* 設置文字大小 */
+  padding: 3px; /* 設置文字的內邊距 */
+}
+
+/* 在 page_img 頁面時，相片按鈕的背景顏色 */
+.page-img-link {
+  border-radius: 20px; /* 圓角邊框 */
+  display: flex; /* 使用 Flexbox 佈局 */
+  align-items: center; /* 垂直居中對齊 */
+  text-decoration: none; /* 移除連結下劃線 */
+  color: #000; /* 設置文字顏色為黑色 */
+  background-color: #e3e2e2; /* 設置背景顏色 */
+}
+
+/* 在 page_video 頁面時，視頻按鈕的背景顏色 */
+.page-video-link {
+  border-radius: 20px; /* 圓角邊框 */
+  display: flex; /* 使用 Flexbox 佈局 */
+  align-items: center; /* 垂直居中對齊 */
+  text-decoration: none; /* 移除連結下劃線 */
+  color: #000; /* 設置文字顏色為黑色 */
+  background-color: #e3e2e2; /* 設置背景顏色 */
+}
+
+/* 在 page_camera 頁面時，照相機按鈕的背景顏色 */
+.page-camera-link {
+  border-radius: 20px; /* 圓角邊框 */
+  display: flex; /* 使用 Flexbox 佈局 */
+  align-items: center; /* 垂直居中對齊 */
+  text-decoration: none; /* 移除連結下劃線 */
+  color: #000; /* 設置文字顏色為黑色 */
+  background-color: #e3e2e2; /* 設置背景顏色 */
+}
+
+/* 在 page_user 頁面時，使用者按鈕的背景顏色 */
+.page-user-link {
+  border-radius: 20px; /* 圓角邊框 */
+  display: flex; /* 使用 Flexbox 佈局 */
+  align-items: center; /* 垂直居中對齊 */
+  text-decoration: none; /* 移除連結下劃線 */
+  color: #000; /* 設置文字顏色為黑色 */
+}
+
+/* 使用者菜單的樣式 */
+.user-menu {
+  position: relative;
+  display: inline-block; /* 內聯區塊級元素 */
+}
+
+.page-user-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none; /* 移除連結下劃線 */
+  color: black; /* 設置文字顏色為黑色 */
+}
+
+.page-user-link img {
+  width: 30px; /* 設置圖片寬度 */
+  height: 30px; /* 設置圖片高度 */
+  border-radius: 50%; /* 圓形圖片 */
+  margin-right: 10px; /* 調整圖片與文字之間的間距 */
+}
+
+/* 隱藏下拉菜單，初始狀態 */
+.dropdown-menu {
+  display: none; /* 隱藏下拉菜單 */
+  position: absolute;
+  background-color: white; /* 背景顏色為白色 */
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2); /* 添加陰影 */
+  z-index: 1; /* 設置堆疊層級 */
+  list-style: none; /* 移除列表樣式 */
+  border-radius: 5px; /* 圓角邊框 */
+  min-width: 125px; /* 設置最小寬度 */
+}
+
+.user-menu ul {
+  background-color: white; /* 背景顏色為白色 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 添加陰影 */
+}
+
+.dropdown-menu li {
+  margin-bottom: 10px; /* 每個下拉選項的下邊距 */
+  text-align: center; /* 文字居中 */
+}
+
+.dropdown-menu li:last-child {
+  margin-bottom: 0; /* 最後一個選項沒有下邊距 */
+}
+
+.dropdown-menu a,
+.logout-button {
+  text-decoration: none; /* 移除連結下劃線 */
+  color: black; /* 設置文字顏色為黑色 */
+  display: block;
+  padding: 8px 12px; /* 內邊距 */
+  border-radius: 3px; /* 圓角邊框 */
+  text-align: center; /* 文字居中 */
+}
+
+.dropdown-menu a:hover,
+.logout-button:hover {
+  background-color: #f1f1f1; /* 滑鼠懸停時的背景顏色 */
+}
+
+/* 登出按鈕樣式 */
+.logout-button {
+  background-color: #f44336; /* 背景顏色為紅色 */
+  color: white; /* 文字顏色為白色 */
+  padding: 8px; /* 內邊距 */
+  border: none; /* 移除邊框 */
+  cursor: pointer; /* 指針樣式為手型 */
+  border-radius: 3px; /* 圓角邊框 */
+  width: 100%; /* 寬度占滿容器 */
+}
+
+.logout-button:hover {
+  background-color: #d32f2f; /* 滑鼠懸停時的背景顏色 */
+}
+
+div.camera-pos-box {
+  margin-top: 1px;
+  display: flex;
+  flex-wrap: wrap;
+  width: 15%;
+  justify-content: center;
+}
+div.camera-pos-box ul {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+div.camera-pos-box ul li {
+  list-style: none;
+  border-radius: 8px;
+  margin: 0.2rem;
+  margin-left: 15px;
+}
+div.camera-pos-box ul li img {
+  border-radius: 10%; /* 圓滑邊框 */
+  width: 70%;
+}
+div.camera-pos-box ul li img:hover {
+  /*&表示自己*/
+  opacity: 0.8; /*透明度 */
+  transform: scale(0.95);
+}
+
+.page-camera-click-mark {
+  opacity: 0.6; /*透明度 */
+  transform: scale(0.9);
+}
+
+main {
+  display: flex;
+}
+
+div.user-setting {
+  width: 95%;
+  display: flex;
+}
+div.user-setting p {
+  font-size: 20px;
+  font-weight: bold;
+}
+div.user-setting div.setting-col1 {
+  width: 25%;
+}
+
+div.user-setting-example {
+  margin-top: -13px;
+  justify-content: center; /* 水平居中 */
+  align-items: center;
+}
+
+div.camera-controls {
+  display: flex;
+  margin-top: 10px;
+  justify-content: center; /* 水平居中 */
+}
+div.camera-controls .camera-start img,
+div.camera-controls .camera-end img {
+  cursor: pointer;
+  height: 90px;
+}
+
+div.user-setting-inputs {
+  margin-top: 10px;
+  justify-content: center; /* 水平居中 */
+}
+div.user-setting-inputs div.angle-inputs {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+div.user-setting-inputs div.angle-inputs div.angle-row {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  margin: 5px;
+}
+div.user-setting-inputs div.angle-inputs div.angle-row label {
+  text-align: center;
+  font-size: 16px;
+  width: 12%;
+  margin-top: 10px;
+}
+div.user-setting-inputs div.angle-inputs div.angle-row input {
+  width: 8%;
+  margin: 1px;
+  margin-top: 10px;
+}
+div.user-setting-inputs div.angle-inputs div.angle-row img {
+  cursor: pointer;
+  width: 10vw;
+  margin: 5px;
+}
+
+div.text {
+  font-size: 13pt;
+  padding-left: 20px; /* 增加左側內距 */
+  font-weight: bold; /* 粗體 */
+  color: blue; /* 藍色 */
+}
+
+div.webcam {
+  display: flex;
+  width: 70%;
+  justify-content: center;
+  margin-top: 5px;
+}
+div.webcam img {
+  width: 78%;
+  -o-object-fit: contain;
+     object-fit: contain; /* 等比例缩放图片 */
+}/*# sourceMappingURL=style_camera3.css.map */

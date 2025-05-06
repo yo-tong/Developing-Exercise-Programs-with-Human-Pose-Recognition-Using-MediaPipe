@@ -1,0 +1,32 @@
+div.camera-pos-box {
+  margin-top: 1px;
+  display: flex;
+  flex-wrap: wrap;
+  width: 15%;
+  justify-content: center;
+  ul {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    li {
+      list-style: none;
+      border-radius: 8px;
+      margin: 0.2rem;
+      margin-left: 15px;
+      img {
+        border-radius: 10%; /* 圓滑邊框 */
+        width: 70%;
+        &:hover {
+          /*&表示自己*/
+          opacity: 0.8; /*透明度 */
+          transform: scale(0.95);
+        }
+      }
+    }
+  }
+}
+.page-camera-click-mark {
+  opacity: 0.6; /*透明度 */
+  transform: scale(0.9);
+}

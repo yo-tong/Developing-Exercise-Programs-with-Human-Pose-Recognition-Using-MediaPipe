@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="zh-Hants">
+  <head>
+    <meta charset="UTF-8" />
+    <title>user</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/style_user.css') }}"
+    />
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+  </head>
+
+  <body>
+    <header>
+      <section class="logo">
+        <a href="/page_home">
+          <img src="static/picture/logo.png" alt="logo" />
+        </a>
+      </section>
+      <nav>
+        <ul>
+          <li>
+            <a href="/page_img">
+              <img src="static/picture/logo_img.png" alt="logo_img" />
+              <span>相片</span>
+            </a>
+          </li>
+          <li>
+            <a href="/page_video">
+              <img src="static/picture/logo_video.png" alt="logo_video" />
+              <span>影片</span>
+            </a>
+          </li>
+          <li>
+            <a href="/page_camera">
+              <img src="static/picture/logo_camera.png" alt="logo_camera" />
+              <span>即時影像</span>
+            </a>
+          </li>
+          <li class="user-menu">
+            <a href="#" class="page-user-link">
+              <img src="static/picture/logo_user.png" alt="logo_user" />
+              <span>{{ username }}</span>
+            </a>
+            <ul class="dropdown-menu page-user-link">
+              <li><a href="/page_user">個人資料</a></li>
+              <li>
+                <form
+                  action="{{ url_for('logout') }}"
+                  method="post"
+                  onsubmit="confirmLogout(event)"
+                >
+                  <div class="logout">
+                    <button type="submit" class="btn btn-danger">登出</button>
+                  </div>
+                </form>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <section class="data">
+        <div class="date_F">
+          <h2>本月使用頻率</h2>
+          <canvas id="heatmapChart" width="650" height="200"></canvas>
+        </div>
+        <div class="all_time">
+          <div class="chart">
+            <h3>今日完成時間 <br />(目標30分)</h3>
+            <canvas
+              id="cumulativePercentageChart"
+              width="300"
+              height="150"
+            ></canvas>
+          </div>
+          <div class="chart" id="cumulativeTimeDisplay">
+            ALL Time: 0 小時 0 分 0 秒
+          </div>
+        </div>
+      </section>
+      <section class="data2">
+        <div class="date_F">
+          <h2>今日達到目標角度次數</h2>
+          <canvas id="dailyModeChart" width="650" height="200"></canvas>
+        </div>
+        <div class="today_play_count">
+          <h2>今日遊玩次數</h2>
+          <div class="chart-wrapper">
+            <div class="chart-container2">
+              <h3>雙手平舉</h3>
+              <div id="video1CountDisplay" class="count-display">0</div>
+            </div>
+            <div class="chart-container2">
+              <h3>側上抬腿</h3>
+              <div id="video2CountDisplay" class="count-display">0</div>
+            </div>
+          </div>
+          <div class="chart-wrapper">
+            <div class="chart-container2">
+              <h3>自訂義角度</h3>
+              <div id="video3CountDisplay" class="count-display">0</div>
+            </div>
+            <div class="chart-container2">
+              <h3>復健</h3>
+              <div id="video4CountDisplay" class="count-display"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="data3">
+        <div>
+          <select id="actionSelect">
+            <option value="">請選擇復健模式名稱</option>
+          </select>
+          <!-- 日期選擇框 --><br />
+          <label for="start_date">開始日期：</label>
+          <input type="date" id="start_date" />
+          <br />
+          <label for="end_date">結束日期：</label>
+          <input type="date" id="end_date" />
+          <br /><br />
+          <!-- 提交按鈕 -->
+          <button id="submit_button">查詢數據</button>
+          <br /><br />
+          <canvas id="angleChart" width="1000" height="200"></canvas>
+        </div>
+      </section>
+      &nbsp;
+    </main>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // 頁面加載時請求動作列表
+        fetch("/get_rehabilitation_actions")
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.error) {
+              console.error(data.error);
+            } else {
+              const actionSelect = document.getElementById("actionSelect");
+
+              data.forEach((action) => {
+                const option = document.createElement("option");
+                option.value = action;
+                option.textContent = action;
+                actionSelect.appendChild(option);
+              });
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching actions:", error);
+          });
+
+        // 提交按鈕事件
+        document
+          .getElementById("submit_button")
+          .addEventListener("click", function () {
+            const actionSelect = document.getElementById("actionSelect");
+            const actionName = actionSelect.value;
+            const startDate = document.getElementById("start_date").value;
+            const endDate = document.getElementById("end_date").value;
+
+            console.log(actionName, startDate, endDate);
+
+            // 檢查輸入是否合法
+            if (!actionName || !startDate || !endDate) {
+              alert("請選擇動作名稱並填寫開始和結束日期！");
+              return;
+            }
+
+            // 發送請求到後端
+            fetch("/get_rehabilitation_angle_data", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                action_name: actionName,
+                start_date: startDate,
+                end_date: endDate,
+              }),
+            })
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error("Network response was not ok");
+                }
+                return response.json();
+              })
+              .then((data) => {
+                if (data.error) {
+                  alert("查詢失敗：" + data.error);
+                  return;
+                }
+                // 獲取時間與角度數據
+                const labels = data.map((item) => item.time);
+                const angles = data.map((item) => item.angle);
+
+                // 繪製圖表
+                drawLineChart(labels, angles);
+              })
+              .catch((error) => {
+                console.error("查詢失敗:", error);
+              });
+          });
+      });
+      let angleChart;
+
+      function drawLineChart(labels, angles) {
+        const ctx = document.getElementById("angleChart").getContext("2d");
+        // 如果已存在圖表，則銷毀
+        if (angleChart) {
+          angleChart.destroy();
+        }
+        angleChart = new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: "復健角度紀錄",
+                data: angles,
+                borderColor: "#C3C9B5",
+                borderWidth: 2,
+                fill: false,
+              },
+            ],
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true,
+              },
+            },
+          },
+        });
+      }
+      function drawEmptyChart() {
+        const ctx = document.getElementById("angleChart").getContext("2d");
+        // 如果已存在圖表，則銷毀
+        if (angleChart) {
+          angleChart.destroy();
+        }
+        angleChart = new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: [], // 空标签
+            datasets: [
+              {
+                label: "無數據",
+                data: [],
+                borderColor: "rgba(0, 0, 0, 0.1)",
+                borderWidth: 1,
+                fill: false,
+              },
+            ],
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true,
+              },
+              x: {
+                title: {
+                  display: true,
+                  text: "時間",
+                },
+              },
+            },
+          },
+        });
+      }
+    </script>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-matrix@1.0.0/dist/chartjs-chart-matrix.min.js"></script>
+    <script src="{{ url_for('static', filename='user_head.js') }}"></script>
+
+    <script>
+      // 頁面加載時自動繪製所有圖表
+      document.addEventListener("DOMContentLoaded", function () {
+        fetch(`/get_mode_data`)
+          .then((response) => response.json())
+          .then((data) => {
+            //console.log(data); // 打印 API 返回的數據
+            updateHeatmapChart(data.heatmap);
+            updateLineChart(data.linechart);
+            updateCumulativeTimeChart(data.cumulative_time);
+
+            // 篩選當天的 video1 模式數據
+            const currentDate = new Date().toISOString().split("T")[0];
+            const video1Data = data.heatmap.find(
+              (d) => d.date === currentDate && d.mode === "雙手平舉"
+            );
+
+            const video1Coucnt = video1Data ? video1Data.frequency : 0;
+
+            // 將 video1Count 顯示在頁面中
+            document.getElementById("video1CountDisplay").textContent =
+              video1Coucnt + " 次";
+            // 獲取 video2 模式使用次數
+            const video2Data = data.heatmap.find(
+              (d) => d.date === currentDate && d.mode === "側上抬腿"
+            );
+            const video2Count = video2Data ? video2Data.frequency : 0;
+            document.getElementById("video2CountDisplay").textContent =
+              video2Count + " 次";
+
+            // 獲取 video3 模式使用次數
+            const video3Data = data.heatmap.find(
+              (d) => d.date === currentDate && d.mode === "自訂義角度"
+            );
+            const video3Count = video3Data ? video3Data.frequency : 0;
+            document.getElementById("video3CountDisplay").textContent =
+              video3Count + " 次";
+
+            // 獲取 video4 模式使用次數
+            const video4Data = data.heatmap.find(
+              (d) => d.date === currentDate && d.mode === "復健"
+            );
+            const video4Count = video4Data ? video4Data.frequency : 0;
+            document.getElementById("video4CountDisplay").textContent =
+              video4Count + " 次";
+          });
+      });
+      function updateHeatmapChart(heatmapData) {
+        const ctx = document.getElementById("heatmapChart").getContext("2d");
+
+        // 獲取當前月份的所有日期
+        const currentDate = new Date();
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        const allDates = [];
+        for (let day = 1; day <= daysInMonth; day++) {
+          const date = new Date(year, month, day);
+          allDates.push(date.toISOString().split("T")[0]);
+        }
+        // 處理data
+        const modes = ["雙手平舉", "側上抬腿", "自訂義角度", "復健"];
+        const colors = [
+          "#FFC8DD", //
+          "#F3D674", //
+          "#B08DF4", //
+          "#C3C9B5", //
+        ];
+        const datasets = modes.map((mode, index) => {
+          // 篩選出當前模式的數據
+          const modeData = heatmapData.filter((d) => d.mode === mode);
+          const frequencies = allDates.map((date) => {
+            const item = modeData.find((d) => d.date === date);
+            return item ? item.frequency : 0;
+          });
+
+          return {
+            label: mode,
+            data: frequencies,
+            backgroundColor: colors[index], // 80 表示透明度
+            borderColor: colors[index],
+            borderWidth: 2,
+            fill: false,
+          };
+        });
+
+        // 檢查和更新圖表
+        if (window.heatmapChart instanceof Chart) {
+          window.heatmapChart.destroy();
+        }
+
+        window.heatmapChart = new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: allDates,
+            datasets: datasets,
+          },
+          options: {
+            responsive: false,
+            maintainAspectRatio: false,
+
+            scales: {
+              x: {
+                title: {
+                  display: true,
+                  text: "日期",
+                },
+              },
+              y: {
+                title: {
+                  display: true,
+                  text: "使用頻率",
+                },
+                beginAtZero: true,
+              },
+            },
+          },
+        });
+      }
+
+      function updateLineChart(data) {
+        const ctx = document.getElementById("dailyModeChart").getContext("2d");
+
+        // 處理數據，按照模式分组
+        const modes = ["雙手平舉", "側上抬腿", "自訂義角度", "復健"];
+        const colors = [
+          "#FFC8DD", //
+          "#F3D674", //
+          "#B08DF4", //
+          "#C3C9B5", //
+        ];
+        const datasets = modes.map((mode, index) => {
+          // 篩選出當前模式的數據
+          const modeData = data.filter((d) => d.mode === mode);
+          const scatterData = modeData.map((d) => {
+            return { x: new Date(d.time), y: d.count }; // 使用 ISO 字符串
+          });
+
+          return {
+            label: mode,
+            data: scatterData,
+            borderColor: colors[index],
+            backgroundColor: colors[index], // 添加透明度
+            fill: false,
+            borderWidth: 2,
+          };
+        });
+
+        // 如果 dailyModeChart已經存在且是 Chart 實例，才用 destroy
+        if (window.dailyModeChart instanceof Chart) {
+          window.dailyModeChart.destroy();
+        }
+
+        window.dailyModeChart = new Chart(ctx, {
+          type: "line",
+          data: {
+            datasets: datasets,
+          },
+          options: {
+            responsive: false,
+            maintainAspectRatio: false,
+
+            scales: {
+              x: {
+                title: {
+                  display: true,
+                  text: "遊玩時間",
+                },
+                type: "time",
+                time: {
+                  unit: "minute",
+                  tooltipFormat: "HH:mm",
+                  displayFormats: {
+                    minute: "HH:mm",
+                  },
+                },
+              },
+              y: {
+                title: {
+                  display: true,
+                  text: "次數",
+                },
+                beginAtZero: true,
+              },
+            },
+          },
+        });
+      }
+
+      function updateCumulativeTimeChart(cumulativeTimeData) {
+        const ctx = document
+          .getElementById("cumulativePercentageChart")
+          .getContext("2d");
+        const cumulativeTimeDiv = document.getElementById(
+          "cumulativeTimeDisplay"
+        );
+
+        const video1Time =
+          cumulativeTimeData.find((data) => data.mode === "雙手平舉")
+            ?.total_time || 0;
+        const video2Time =
+          cumulativeTimeData.find((data) => data.mode === "側上抬腿")
+            ?.total_time || 0;
+        const video3Time =
+          cumulativeTimeData.find((data) => data.mode === "自訂義角度")
+            ?.total_time || 0;
+        const video4Time =
+          cumulativeTimeData.find((data) => data.mode === "復健")?.total_time ||
+          0;
+
+        // 計算總和的累積時間
+        const totalTime = video1Time + video2Time + video3Time + video4Time;
+
+        // 將秒數轉為小時、分鐘、秒的格式
+        const hours = Math.floor(totalTime / 3600);
+        const minutes = Math.floor((totalTime % 3600) / 60);
+        const seconds = totalTime % 60;
+
+        // 更新累積時間顯示
+        cumulativeTimeDiv.textContent = `ALL Time:   ${hours} 小時 ${minutes} 分 ${seconds} 秒`;
+        // 更新餅圖
+        updateCumulativePercentageChart(totalTime);
+
+        // 如果總時間為0，顯示一條信息
+        const data =
+          totalTime > 0
+            ? [video1Time, video2Time, video3Time, video4Time]
+            : [1];
+
+        const labels =
+          totalTime > 0
+            ? ["雙手平舉", "側上抬腿", "自訂義角度", "復健"]
+            : ["No data available"]; // 没有數據時時顯示提示信息
+
+        const backgroundColor =
+          totalTime > 0
+            ? [
+                "#FFC8DD", //
+                "#F3D674", //
+                "#B08DF4", //
+                "#C3C9B5", //
+              ]
+            : ["#E0E0E0"];
+
+        // 使用餅圖展示數據
+      }
+      function updateCumulativePercentageChart(totalTime) {
+        const ctx = document
+          .getElementById("cumulativePercentageChart")
+          .getContext("2d");
+
+        const maxSeconds = 1800; // 30 分= 1800 秒
+        let percentage = (totalTime / maxSeconds) * 100; // 計算百分比
+        // 确保百分比不超过 100%
+        if (percentage > 100) {
+          percentage = 100;
+        }
+        if (window.cumulativePercentageChart instanceof Chart) {
+          window.cumulativePercentageChart.destroy();
+        }
+        // 自訂義插件，用於在中心顯示百分比
+        const centerTextPlugin = {
+          id: "centerText",
+          beforeDraw: function (chart) {
+            const width = chart.width;
+            const height = chart.height;
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const ctx = chart.ctx;
+            ctx.save();
+
+            const fontSize = (height / 120).toFixed(2);
+            ctx.font = fontSize + "em sans-serif";
+            ctx.textBaseline = "middle";
+
+            const text = percentage.toFixed(0) + "%"; // 百分比文本
+            const textX = Math.round((width - ctx.measureText(text).width) / 2);
+            const textY = height / 1.6;
+
+            ctx.fillText(text, textX, textY);
+            ctx.restore();
+          },
+        };
+        // 創建新的圓餅圖
+        window.cumulativePercentageChart = new Chart(ctx, {
+          type: "doughnut", // 餅圖類型
+          data: {
+            labels: ["game time", "remaining time"],
+            datasets: [
+              {
+                data: [
+                  Math.min(totalTime, maxSeconds),
+                  maxSeconds - Math.min(totalTime, maxSeconds),
+                ],
+
+                backgroundColor: [" rgba(  154, 162, 235, 0.9) ", "#E0E0E0"], // 已使用时间和剩余时间的颜色
+              },
+            ],
+          },
+          options: {
+            responsive: false,
+            maintainAspectRatio: false,
+            plugins: {
+              tooltip: {
+                callbacks: {
+                  label: function (tooltipItem) {
+                    if (tooltipItem.label === "game time") {
+                      return `遊玩: ${percentage.toFixed(2)}%`;
+                    }
+                    return `剩餘: ${(100 - percentage).toFixed(2)}%`;
+                  },
+                },
+              },
+            },
+          },
+          plugins: [centerTextPlugin], // 啟用自訂義插件
+        });
+      }
+    </script>
+  </body>
+</html>

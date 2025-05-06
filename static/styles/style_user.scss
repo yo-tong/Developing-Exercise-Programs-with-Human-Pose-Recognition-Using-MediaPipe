@@ -1,0 +1,133 @@
+@import "./header";
+/* page-user在此畫面停留底色*/
+.page-user-link {
+  background-color: #e3e2e2;
+}
+main {
+  display: flex;
+  flex-wrap: wrap;
+}
+h2 {
+  font-size: 25px;
+  text-align: center;
+  color: #333;
+}
+canvas {
+  display: block;
+  margin: 0 auto; /* 使 canvas 居中 */
+}
+
+section.data {
+  flex-wrap: row;
+  background-color: #ffffff;
+  display: flex;
+  width: 100%;
+  padding: 5px;
+  .all_time {
+    width: 40%;
+  }
+}
+section.data2 {
+  display: flex;
+  width: 100%;
+  padding: 5px;
+  .today_play_count {
+    display: flex;
+    flex-wrap: wrap;
+    width: 40%;
+    border: 2px solid #ccc;
+    background-color: #f9f9f9;
+    text-align: center;
+    justify-content: center;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+  }
+}
+section.data3 {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: center;
+  text-align: center;
+  border: 2px solid #ccc;
+  background-color: #f9f9f9;
+  padding: 20px;
+  margin: 10px;
+  margin-bottom: 0;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+div.date_F {
+  width: 60%;
+  text-align: center;
+  border: 2px solid #ccc;
+  background-color: #f9f9f9;
+  padding: 20px;
+  margin: 10px;
+  margin-bottom: 0;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+div.chart-container {
+  width: 40%;
+  border: 2px solid #ccc;
+  background-color: #f9f9f9;
+  padding: 20px;
+  margin: 10px;
+  margin-bottom: 0;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+div.chart {
+  text-align: center;
+  border: 2px solid #ccc;
+  background-color: #f9f9f9;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+h3 {
+  font-size: 15px;
+  text-align: center;
+}
+div.chart-wrapper {
+  width: 100%;
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+div.chart-container2 {
+  width: 50%;
+  height: 100%;
+  gap: 20px;
+  border: 2px solid #ccc;
+  background-color: #f9f9f9;
+  padding: 5px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  h3 {
+    background-color: #ede3e3b2;
+  }
+}
+.count-display {
+  //今日遊玩次數
+  font-size: 25px;
+  text-align: center;
+  font-weight: bold;
+  margin: 20px 0;
+}

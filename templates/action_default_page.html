@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-Hants">
+  <head>
+    <meta charset="UTF-8" />
+    <title>指定角度</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/style_setangle.css') }}"
+    />
+  </head>
+  <body>
+    <header>
+      <section class="logo">
+        <a href="/page_home">
+          <img
+            src="{{ url_for('static', filename='picture/logo.png') }}"
+            alt="logo"
+          />
+        </a>
+      </section>
+      <nav>
+        <ul>
+          <li>
+            <a href="/page_img">
+              <img
+                src="{{ url_for('static', filename='picture/logo_img.png') }}"
+                alt="logo_img"
+              />
+              <span>相片</span>
+            </a>
+          </li>
+          <li>
+            <a href="/page_video">
+              <img
+                src="{{ url_for('static', filename='picture/logo_video.png') }}"
+                alt="logo_video"
+              />
+              <span>影片</span>
+            </a>
+          </li>
+          <li>
+            <a href="/page_camera" class="page-camera-link">
+              <img
+                src="{{ url_for('static', filename='picture/logo_camera.png') }}"
+                alt="logo_camera"
+              />
+              <span>即時影像</span>
+            </a>
+          </li>
+          <li class="user-menu">
+            <a href="#" class="page-user-link">
+              <img
+                src="{{ url_for('static', filename='picture/logo_user.png') }}"
+                alt="logo_user"
+              />
+              <span>{{g.username }}</span>
+            </a>
+            <!-- 下拉選單 -->
+            <ul class="dropdown-menu page-user-link">
+              <li><a href="/page_user">個人資料</a></li>
+              <li>
+                <form
+                  action="{{ url_for('logout') }}"
+                  method="post"
+                  onsubmit="confirmLogout(event)"
+                >
+                  <div class="logout">
+                    <button type="submit" class="btn btn-danger">登出</button>
+                  </div>
+                </form>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <div class="camera-pos-box">
+        <ul>
+          <li>
+            <a href="/page_camera1">
+              <img
+                src="{{ url_for('static', filename='picture/pos1.png') }}"
+                alt="logo_pos1"
+              />
+            </a>
+          </li>
+          <li>
+            <a href="/page_camera2">
+              <img
+                src="{{ url_for('static', filename='picture/pos2.png') }}"
+                alt="logo_pos2"
+              />
+            </a>
+          </li>
+          <li>
+            <a href="/page_camera3">
+              <img
+                src="{{ url_for('static', filename='picture/pos3.png') }}"
+                alt="logo_pos3"
+              />
+            </a>
+          </li>
+          <li>
+            <a href="/page_data">
+              <img
+                class="page-camera-click-mark"
+                src="{{ url_for('static', filename='picture/pos4.png') }}"
+                alt="logo_pos4"
+              />
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="user-setting">
+        <div class="setting-col">
+          <p>【復健】</p>
+          <div class="user-setting-example">
+            <img
+              src="{{ url_for('static', filename='picture/people.png') }}"
+              alt="pos4"
+              style="height: 280px"
+            />
+          </div>
+          <div class="camera-controls">
+            <div class="camera-start">
+              <img
+                id="openCameraButton"
+                disabled
+                src="{{ url_for('static', filename='picture/on_camera.png') }}"
+                alt="start"
+              />
+            </div>
+            <div class="camera-start">
+              <img
+                id="startButton"
+                disabled
+                src="{{ url_for('static', filename='picture/start_R.png') }}"
+                alt="start"
+              />
+            </div>
+            <div class="camera-end">
+              <img
+                id="offCameraButton"
+                src="{{ url_for('static', filename='picture/off_camera.png') }}"
+                alt="stop"
+                style="display: none"
+              />
+            </div>
+            <div id="countdown" style="font-size: 30px; color: red"></div>
+          </div>
+        </div>
+        <div class="user-setting-inputs">
+          <form
+            id="angleForm"
+            action="{{ url_for('specify_angle', action_id=action.id) }}"
+            method="post"
+          >
+            <input
+              type="hidden"
+              name="action_name"
+              value="{{ action['action_name'] }}"
+            />
+
+            <div class="form-group">
+              <div class="setting-row">
+                <label class="label_control">
+                  • 動作名稱： {{ action['action_name'] }}
+                </label>
+                <label class="label_control">
+                  • 復健部位： {{ action['angle_type'] }}
+                </label>
+              </div>
+              <div class="setting-row">
+                <label class="label_control">
+                  • 初始角度： {{ action['initial_angle']}}
+                </label>
+                <label class="label_control">
+                  • 狀態： {{ action['angle_direction'] }}
+                </label>
+              </div>
+              <div class="angle-inputs">
+                <div class="angle-row">
+                  <label for="goal_angle">• 目標角度：</label>
+                  <input
+                    type="number"
+                    id="goal_angle"
+                    name="{{ action['angle_type'] }}"
+                    min="1"
+                    max="360"
+                    value="{{ action['goal_angle']  }}"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="webcam">
+              <img id="videoFeed" style="display: none" alt="Pose Detection" />
+            </div>
+            <div class="webcam">
+              <img
+                id="videoFeed_null"
+                style="display: none"
+                alt="Pose Detection"
+              />
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ url_for('static', filename='user_head.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      window.onbeforeunload = function () {
+        $.post("/close_camera", function (response) {
+          console.log(response.message); // 可以在控制台中查看消息
+        });
+      };
+    </script>
+    <script>
+      $(document).ready(function () {
+        $("#videoFeed_null").attr("src", "/static/picture/Loading2.gif");
+        $("#startButton").hide();
+        $("#openCameraButton").show();
+        $("#offCameraButton").hide();
+        $("#countdown").hide();
+        // 在頁面加載時顯示一張圖片
+        //$("#videoFeed").attr("src", "/static/picture/Loading2.gif");
+        // 點擊開攝像頭按鈕時，發送請求以打開攝像頭
+        $("#openCameraButton").click(function () {
+          $("#openCameraButton").hide();
+          $("#videoFeed_null").attr("src", "/static/picture/Loading2.gif");
+          $("#videoFeed_null").show();
+          $("#startButton").hide();
+
+          fetch("/open_camera")
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              $("#videoFeed_null").attr("src", "/open_camera");
+              $("#videoFeed_null").one("load", function () {
+                $("#startButton").show();
+              });
+            })
+            .catch((error) => {
+              console.error("Error details:", error);
+              alert("攝像頭加載失敗，請重試！");
+            });
+        });
+        $("#offCameraButton").click(function () {
+          // 停止視頻並處理相應事件
+          $("#videoFeed").attr("src", ""); // 清空視頻源
+          $("#videoFeed_null").attr("src", ""); // 清空視頻源
+          $("#videoFeed").hide();
+          $("#videoFeed_null").hide();
+          $.post("/stop4_video", function (response) {
+            alert(response);
+            // 停止後可以重新顯示開啟攝像頭按鈕
+            $("#offCameraButton").hide();
+            $("#startButton").hide();
+
+            $("#countdown").hide(); // 隱藏倒數
+            $("#openCameraButton").show(); // 顯示開啟攝像頭按鈕
+          });
+        });
+        // 當點擊開始按鈕時
+        $("#startButton").click(function () {
+          var initialAngle = parseInt("{{ action['initial_angle'] }}"); // 初始角度
+          var goalAngle = $("#goal_angle").val(); // 目標角度
+          var direction = "{{ action['angle_direction'] }}"; // '角度變小' 或 '角度變大'
+
+          // 判斷目標角度是否符合要求
+          if (
+            (direction === "角度變小" && goalAngle < initialAngle) ||
+            (direction === "角度變大" && goalAngle > initialAngle)
+          ) {
+            // 使用 AJAX 提交表單
+            var formData = $("#angleForm").serialize(); // 獲取表單數據
+            $.ajax({
+              url: "/specify_angle", // 表單提交的路由
+              method: "POST", // 提交方法
+              data: formData, // 傳送表單數據
+              success: function (response) {
+                console.log("表單提交成功！", response);
+
+                // 表單提交成功後開始視訊流
+                $("#videoFeed").show();
+                $("#videoFeed").attr("src", "/start_video4"); // 開啟視訊流
+
+                // 當視頻加載完成後隱藏 #videoFeed_null
+                $("#videoFeed").on("load", function () {
+                  $("#videoFeed_null").hide();
+                });
+
+                $("#startButton").hide();
+                $("#openCameraButton").hide();
+                $("#offCameraButton").hide();
+                $("#countdown").show(); // 顯示倒計時
+
+                let timeLeft = 30; // 倒數60秒
+                $("#countdown").text(` ${timeLeft}秒`);
+
+                // 設置倒數計時器
+                const countdownInterval = setInterval(() => {
+                  timeLeft--;
+                  $("#countdown").text(` ${timeLeft}秒`);
+                  if (timeLeft <= 0) {
+                    clearInterval(countdownInterval);
+                    $("#videoFeed").hide();
+                    $("#videoFeed").attr("src", ""); // 清空視頻源
+
+                    // 發送停止請求
+                    $.post("/stop5_video", function (response) {
+                      alert(response); // 顯示伺服器回應
+                    });
+
+                    $("#offCameraButton").show();
+                    $("#startButton").show();
+                    $("#videoFeed_null").attr("src", "/maintain_camera");
+                    $("#videoFeed_null").show();
+                    $("#countdown").hide(); // 隱藏計時器
+                  }
+                }, 1000); // 每秒更新
+              },
+              error: function (xhr, status, error) {
+                // 表單提交失敗
+                console.error("提交失敗：", error);
+                alert("表單提交失敗，請檢查輸入內容！");
+              },
+            });
+          } else {
+            // 角度不符合條件
+            alert(
+              "目標角度不符合條件。目標角度應小於或大於初始角度，取決於方向。"
+            );
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

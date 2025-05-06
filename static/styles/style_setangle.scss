@@ -1,0 +1,98 @@
+@import "./header";
+@import "./camera-pos-box";
+.setting-col {
+  display: flex;
+  flex-direction: column;
+}
+.setting-row {
+  width: 100%;
+  display: flex;
+  margin-bottom: 20px;
+}
+.label_control {
+  margin-top: 6px;
+  width: 15vw;
+}
+main {
+  display: flex;
+}
+div.form-group {
+  background-color: #ebecec;
+  border-radius: 12px; /* 圓角 */
+  padding: 5px;
+  margin-top: 10px;
+}
+
+div.user-setting-example {
+  margin-top: -13px;
+  justify-content: center; /* 水平居中 */
+  align-items: center;
+}
+div.camera-controls {
+  display: flex;
+  margin-top: 10px;
+  justify-content: center; /* 水平居中 */
+  .camera-start,
+  .camera-end {
+    // margin-right: 20px;
+    img {
+      cursor: pointer;
+      height: 90px;
+    }
+  }
+}
+div.user-setting {
+  width: 95%;
+  display: flex;
+
+  p {
+    font-size: 20px;
+    font-weight: bold;
+  }
+}
+div.form-group {
+  display: flex;
+  flex-direction: column;
+  label {
+    font-size: 18px;
+    width: 22vw;
+  }
+}
+div.user-setting-inputs {
+  margin-left: 20px;
+  width: 65%;
+  justify-content: center; /* 水平居中 */
+  div.angle-inputs {
+    //justify-content: center;
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    div.angle-row {
+      display: flex;
+      flex-direction: row;
+      label {
+        font-size: 22px;
+        width: 10vw;
+        font-weight: bold;
+      }
+      input {
+        width: 10vw;
+      }
+      img {
+        cursor: pointer;
+        margin: 5px;
+      }
+    }
+  }
+}
+
+div.webcam {
+  display: flex;
+  width: 80%;
+  justify-content: center;
+  margin-top: 5px;
+  img {
+    width: 70%;
+    object-fit: contain; /* 等比例縮放圖片 */
+  }
+}

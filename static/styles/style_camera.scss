@@ -1,0 +1,65 @@
+@import "./header";
+@import "./camera-pos-box";
+main {
+  display: flex;
+  section.camera {
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    width: 75%;
+
+    align-items: center;
+    padding: 10px;
+    .camera-img {
+      //border: 3px solid rgb(13, 0, 255);
+      width: 75%;
+      justify-content: center; /* 水平置中 */
+      flex: 1;
+      display: flex;
+      align-items: center;
+      img {
+        width: 90%;
+        height: auto;
+      }
+    }
+    .camera-controls {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+    .camera-start {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img {
+        cursor: pointer;
+        width: 150px;
+      }
+    }
+    .camera-end {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img {
+        cursor: pointer;
+        width: 150px;
+      }
+    }
+  }
+
+  section.camera_pos_example {
+    text-align: center;
+    .text {
+      text-align: center;
+      font-size: 12pt;
+    }
+    width: 20%;
+    img {
+      width: 70%;
+      padding: 3px;
+    }
+  }
+}
+.page-camera-click-mark {
+  opacity: 0.5;
+}
