@@ -983,16 +983,25 @@ def close_camera():
     return jsonify({"status": "success", "message": "Camera closed successfully."})
 
 @app.route('/open_camera' ) # Open the camera
-def open_camera  (camera_index=0):
+def open_camera  ():
     global cap 
-    return Response(open_frames(camera_index), mimetype='multipart/x-mixed-replace; boundary=frame')
-def open_frames(camera_index=0):  
-    global cap  
-    if cap is not None:
-        print("open_frames")
-        cap.release()  # Release the previous camera
-    cap = cv2.VideoCapture(camera_index)  # Open new camera
+    # 嘗試開啟 camera_index=1，若失敗再開啟 camera_index=0
+    for camera_index in [1, 0]:
+        cap = cv2.VideoCapture(camera_index)
+        if cap.isOpened():
+            print(f"✅ Camera opened at index {camera_index}")
+            break
+        else:
+            print(f"❌ Failed to open camera at index {camera_index}")
+            cap.release()
+            cap = None
 
+    if cap is None or not cap.isOpened():
+        return "No available camera found", 500
+    return Response(open_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+def open_frames():  
+    global cap  
     while cap and cap.isOpened():  
         success, frame = cap.read()  
         if not success or frame is None:
@@ -1006,15 +1015,24 @@ def open_frames(camera_index=0):
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 @app.route('/maintain_camera' ) 
-def maintain_camera  (camera_index=0
-                      
-                      ):
+def maintain_camera ():
     global cap
-    return Response(maintain_frames(camera_index), mimetype='multipart/x-mixed-replace; boundary=frame')
-def maintain_frames(camera_index=0):  
-    global cap  
-    if cap is None or not cap.isOpened():
+     # 優先使用 camera_index=1，如果失敗則改用 camera_index=0
+    for camera_index in [1, 0]:
         cap = cv2.VideoCapture(camera_index)
+        if cap.isOpened():
+            print(f"✅ Camera opened at index {camera_index}")
+            break
+        else:
+            print(f"❌ Failed to open camera at index {camera_index}")
+            cap.release()
+            cap = None
+
+    if cap is None or not cap.isOpened():
+        return "❌ 無法開啟攝影機", 500
+    return Response(maintain_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+def maintain_frames():  
+    global cap  
     while cap and cap.isOpened():  
         success, frame = cap.read()  
         if not success or frame is None:
@@ -1033,6 +1051,8 @@ def generate_frame(processor,user_id, mode,state,camera_index=0):  # Generates f
     if cap is None or not cap.isOpened():
         cap = cv2.VideoCapture(0)
         if not cap.isOpened():
+            cap.release()
+            cap = None
             flash('無法打開攝像頭', 'error')
             return redirect(url_for('error_page'))  # Redirect to error page
 
@@ -1055,6 +1075,8 @@ def generate_frames(processor, user_id, mode, state, camera_index=0):
     log_user_activity(user_id, mode, state) # Start recording activity
     cap = cv2.VideoCapture(0) 
     if not cap.isOpened(): # Check if the camera opened successfully
+        cap.release()
+        cap = None
         print(f"Cannot open camera {camera_index}")
         return
     while cap and cap.isOpened():  
@@ -1410,9 +1432,6 @@ def get_rehabilitation_angle_data(conn):
         
         return jsonify(data)
     
-    except Exception as e:
-        print(f"後端錯誤: {e}")
-        return jsonify({'error': '內部伺服器錯誤'}), 500  #  Catch exception and return error
     except KeyError as e:
         print(f"缺少必要的參數: {e}")
         return jsonify({'error': '缺少必要的參數'}), 400
