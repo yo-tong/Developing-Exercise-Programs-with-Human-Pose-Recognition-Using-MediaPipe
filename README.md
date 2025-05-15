@@ -14,6 +14,7 @@
 
 📁 圖片與影片處理分析
 
+[![觀看影片示範](https://img.youtube.com/vi/xxzxte7LMyA/0.jpg)](https://www.youtube.com/watch?v=xxzxte7LMyA)
 ---
 
 ## 📌 功能介紹
