@@ -14,7 +14,10 @@
 
 📁 圖片與影片處理分析
 
-[![觀看影片示範](https://img.youtube.com/vi/xxzxte7LMyA/0.jpg)](https://www.youtube.com/watch?v=xxzxte7LMyA)
+
+# 🎬 示意影片
+
+ [![觀看影片示範](https://img.youtube.com/vi/xxzxte7LMyA/0.jpg)](https://www.youtube.com/watch?v=xxzxte7LMyA)
 ---
 
 ## 📌 功能介紹
@@ -48,14 +51,47 @@
 
 ### 2️⃣  資料庫設定
 請建立一個 MySQL 資料庫，並執行初始化 SQL 檔（如有提供）建立下列表格：
+### 📋 `user_activity` 表
 
-- users：用戶資料
+紀錄使用者每次執行模式（mode）時的活動資料。
 
-- user_activity：每次復健紀錄（時間、模式、角度、次數）
+```sql
+DROP TABLE IF EXISTS user_activity;
+CREATE TABLE user_activity (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    mode VARCHAR(255),
+    start_time DATETIME,
+    end_time DATETIME,
+    count INT,
+    action_name VARCHAR(255) NULL, -- 新增記錄部位的字段
+    body_angle FLOAT NULL,        -- 新增記錄部位角度的字段
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+DROP TABLE actions;
+CREATE TABLE actions (
+    id INT AUTO_INCREMENT PRIMARY KEY,  -- 新增主鍵
+    user_id INT NOT NULL,                -- 用戶 ID
+    action_name VARCHAR(255) NOT NULL,   -- 動作名稱    angle_type VARCHAR(255), 
+    initial_angle INT,                   -- 初始角度
+    goal_angle INT,                      -- 目標角度
+    angle_direction VARCHAR(10),          -- 角度方向，'greater' 或 'less'
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- 創建時間
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  -- 更新時間
+);
 
-- actions_activity：每個動作的角度記錄
+```
+| 欄位名稱     | 類型           | 說明                             |
+|--------------|----------------|----------------------------------|
+| id           | INT            | 主鍵，自動遞增                  |
+| user_id      | INT            | 使用者 ID，外鍵連接 `users` 表  |
+| mode         | VARCHAR(255)   | 模式名稱（例如：雙手平舉）     |
+| start_time   | DATETIME       | 活動開始時間                    |
+| end_time     | DATETIME       | 活動結束時間                    |
+| count        | INT            | 執行次數                         |
+| action_name  | VARCHAR(255)   | 動作名稱              |
+| body_angle   | FLOAT          | 動作時的角度          |
 
-- action_settings：用戶設定的角度與方向門檻
 
 ### 3️⃣  執行主程式
 ```bash
