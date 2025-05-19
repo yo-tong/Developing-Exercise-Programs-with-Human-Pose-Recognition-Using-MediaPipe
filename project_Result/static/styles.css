@@ -1,0 +1,38 @@
+p {
+  font-size: 20pt; /* 以點（point）為單位 */
+  /*padding-left: 100px;*/
+  /*padding-right: 100px;*/
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.login-container input[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+.keep_right {
+  display: flex;
+  justify-content: flex-end; /* 將內部元素靠右對齊 */
+  align-items: center; /*垂直居中*/
+  /*height: 100px;*/
+  background-color: #f4f1e8;
+}
+
+.keep_left {
+  display: flex;
+  justify-content: flex-start; /* 將內部元素靠左對齊 */
+  align-items: center; /*垂直居中*/
+  /*height: 100px;*/
+  /*background-color: #F4F1E8;*/
+}
+
+.keep_middle {
+  display: flex;
+  justify-content: center; /* 將內部元素左右置中 */
+  align-items: center; /*垂直居中*/
+  /*height: 100px;*/
+  /*background-color: #fff;*/
+}

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-Hants">
+  <head>
+    <meta charset="UTF-8" />
+    <title>camera</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/style_camera.css') }}"
+    />
+  </head>
+  <body>
+    <header>
+      <section class="logo">
+        <a href="/page_home">
+          <img src="static/picture/logo.png" alt="logo" />
+        </a>
+      </section>
+      <nav>
+        <ul>
+          <li>
+            <a href="/page_img">
+              <img src="static/picture/logo_img.png" alt="logo_img" />
+              <span>相片</span>
+            </a>
+          </li>
+          <li>
+            <a href="/page_video">
+              <img src="static/picture/logo_video.png" alt="logo_video" />
+              <span>影片</span>
+            </a>
+          </li>
+          <li>
+            <a href="/page_camera" class="page-camera-link">
+              <img src="static/picture/logo_camera.png" alt="logo_camera" />
+              <span>即時影像</span>
+            </a>
+          </li>
+          <li class="user-menu">
+            <a href="#" class="page-user-link">
+              <img src="static/picture/logo_user.png" alt="logo_user" />
+              <span>{{ username }}</span>
+            </a>
+            <!-- 下拉選單 -->
+            <ul class="dropdown-menu page-user-link">
+              <li><a href="/page_user">個人資料</a></li>
+              <li>
+                <form
+                  action="{{ url_for('logout') }}"
+                  method="post"
+                  onsubmit="confirmLogout(event)"
+                >
+                  <div class="logout">
+                    <button type="submit" class="btn btn-danger">登出</button>
+                  </div>
+                </form>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <div class="camera-pos-box">
+        <ul>
+          <li>
+            <a href="/page_camera1">
+              <img src="static/picture/pos1.png" alt="logo_pos1" />
+            </a>
+          </li>
+          <li>
+            <a href="/page_camera2">
+              <img
+                class="page-camera-click-mark"
+                src="static/picture/pos2.png"
+                alt="logo_pos2"
+              />
+            </a>
+          </li>
+          <li>
+            <a href="/page_camera3">
+              <img src="static/picture/pos3.png" alt="logo_pos3" />
+            </a>
+          </li>
+          <li>
+            <a href="/page_data">
+              <img src="static/picture/pos4.png" alt="logo_pos4" />
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <section class="camera">
+        <div class="camera-img">
+          <img id="videoFeed" style="display: none" alt="Pose Detection" />
+        </div>
+        <div class="camera-controls">
+          <div class="camera-start">
+            <img id="startButton" src="static/picture/start.png" alt="start" />
+          </div>
+          <div class="camera-end">
+            <img id="stopButton" src="static/picture/stop.png" alt="stop" />
+          </div>
+        </div>
+      </section>
+      <section class="camera_pos_example">
+        <div class="text"">開始動作前，請先立正。</div>
+        <div>
+          <img src="static/picture/demon1.jpg" alt="demon1" />
+        </div>
+        <div>
+          <img src="static/picture/demon22.jpg" alt="demon2" />
+        </div>
+        <div>
+          <img src="static/picture/demon3.jpg" alt="demon3" />
+        </div>
+      </section>
+    </main>
+    <script src="{{ url_for('static', filename='user_head.js') }}"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        // 在頁面加載時顯示一張圖片
+        $("#videoFeed").attr("src", "/static/picture/Loading2.gif");
+        $("#startButton").click(function () {
+          // 提交角度表單以更新服務器上的角度設置
+          $.ajax({
+            type: "POST",
+            url: "/specify_angle_define_yourself",
+            data: $("#angleForm").serialize(),
+            success: function (response) {
+              console.log("Angles set successfully:", response);
+              // 加載黑屏圖片後再開始視頻流
+              $("#videoFeed").show();
+              //// $.get("/start_video1");
+              $("#videoFeed").attr("src", "/start_video2");
+            },
+            error: function (error) {
+              console.error("Error setting angles:", error);
+            },
+          });
+        });
+
+        $("#stopButton").click(function () {
+          $("#videoFeed").hide();
+          $("#videoFeed").attr("src", "/static/picture/Loading2.gif");
+          // Send POST request to stop video and save it
+          $.post("/stop_video", function (response) {
+            alert(response); // Show alert with response from server
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

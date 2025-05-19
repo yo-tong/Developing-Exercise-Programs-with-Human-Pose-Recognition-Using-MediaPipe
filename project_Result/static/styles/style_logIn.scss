@@ -1,0 +1,36 @@
+p {
+  font-size: 20pt; /* 以點（point）為單位 */
+}
+
+.logo {
+  width: 35%;
+  margin: auto;
+  position: relative;
+  left: 5px; /* 向右移動 5px */
+  img {
+    width: 100%;
+  }
+}
+
+.login-container {
+  width: 35%;
+  text-align: center; /* 將元素居中 */
+  background-color: #f0eeee; /* 背景顏色 */
+  border: 2px solid #ffffff; /* 外框的顏色和粗細 */
+  padding: 50px;
+  margin: 10px auto; /* 自動水平居中 */
+  border-radius: 10px; /* 圓角外框 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 添加陰影效果 */
+  input[type="submit"]:hover {
+    background-color: #3e69b4;
+  }
+  input[type="submit"] {
+    padding: 10px;
+    background-color: #4566a0;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+  }
+}
